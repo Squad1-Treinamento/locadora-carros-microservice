@@ -1,6 +1,10 @@
 package com.cursopcv.pessoaservice.service;
 
+import com.cursopcv.pessoaservice.dto.PessoaRequest;
+import com.cursopcv.pessoaservice.dto.PessoaResponse;
+import com.cursopcv.pessoaservice.mapper.PessoaMapper;
 import com.cursopcv.pessoaservice.model.Motorista;
+import com.cursopcv.pessoaservice.model.Pessoa;
 import com.cursopcv.pessoaservice.repository.MotoristaRepository;
 import com.cursopcv.pessoaservice.repository.PessoaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,23 +17,21 @@ public class MotoristaService {
     @Autowired
     private MotoristaRepository motoristaRepository;
     private PessoaRepository pessoaRepository;
+    private PessoaMapper pessoaMapper;
 
-    public Motorista cadastrar(@RequestBody Motorista motorista) {
-        if(pessoaRepository.existsByCpf(motorista.getCpf()) == null){
-            throw new EntityNotFoundException("Motorista não existente");
+    public PessoaResponse cadastrar(PessoaRequest motorista) {
+        if(pessoaRepository.existsByCpf(motorista.cpf())){
+            throw new EntityNotFoundException("Motorista já existente!");
         }
 
-        if(motorista.getNumeroCNH() == null){
+        if(motorista.numeroCNH() == null){
             throw new EntityNotFoundException("Motorista sem CNH cadastrada!");
         }
 
-        Motorista motoristaSalvar = new Motorista();
+        Pessoa pessoaNova = pessoaMapper.toEntity(motorista);
+        Motorista motoristaSalvo = motoristaRepository.save((Motorista) pessoaNova);
 
-        motoristaSalvar.setCpf(motorista.getCpf());
-        motoristaSalvar.setNumeroCNH(motorista.getNumeroCNH());
-        motoristaSalvar.setNome(motorista.getNome());
-
-        return motoristaRepository.save(motoristaSalvar);
+        return pessoaMapper.toResponse(motoristaSalvo);
     }
 
 }

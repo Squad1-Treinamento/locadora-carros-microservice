@@ -5,7 +5,9 @@ import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import com.cursopcv.pessoaservice.model.Funcionario;
 import com.cursopcv.pessoaservice.model.Motorista;
 import com.cursopcv.pessoaservice.model.Pessoa;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PessoaMapper {
     public Pessoa toEntity(PessoaRequest request) {
         if (request == null) return null;
