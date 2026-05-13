@@ -4,4 +4,5 @@ import com.cursopcv.pessoaservice.model.Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PessoaRepository extends JpaRepository<Pessoa, Integer> {
+    Pessoa existsByCpf(String cpf);
 }
