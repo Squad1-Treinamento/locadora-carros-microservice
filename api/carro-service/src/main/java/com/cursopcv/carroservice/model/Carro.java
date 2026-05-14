@@ -25,7 +25,7 @@ public class Carro {
     private String chassi;
     private String cor;
     private BigDecimal valorDiaria;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "modelo_id")
     private ModeloCarro modelo;
     @ManyToMany

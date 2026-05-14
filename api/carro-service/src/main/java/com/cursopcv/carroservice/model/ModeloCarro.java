@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,5 +24,6 @@ public class ModeloCarro {
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
-
+    @OneToMany(mappedBy = "modelo", cascade = CascadeType.REMOVE)
+    private Set<Carro> carros;
 }
