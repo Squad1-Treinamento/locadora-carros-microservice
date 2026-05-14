@@ -31,6 +31,10 @@ public class MotoristaService {
             throw new EntityNotFoundException("Motorista sem CNH cadastrada!");
         }
 
+        if(motorista.email() == null){
+            throw new EntityNotFoundException("Motorista sem email cadastrado!");
+        }
+
         Pessoa pessoaNova = pessoaMapper.toEntity(motorista);
         Motorista motoristaSalvo = motoristaRepository.save((Motorista) pessoaNova);
 

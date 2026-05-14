@@ -8,6 +8,6 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.util.Date;
 
 public record PessoaRequest(
-        @NotBlank String nome, @CPF String cpf, @NotNull Date dataNascimento, String matricula, String numeroCNH, Sexo sexo
+        @NotBlank String nome, @CPF String cpf, @NotNull Date dataNascimento, String matricula, String numeroCNH, Sexo sexo, String email
 ) {
 }

@@ -22,6 +22,10 @@ public class PessoaMapper {
             Funcionario funcionario = new Funcionario();
             funcionario.setMatricula(request.matricula());
             pessoa = funcionario;
+        } else if (request.email() != null && !request.email().isBlank()) {
+            Motorista motorista = new Motorista();
+            motorista.setEmail(request.email());
+            pessoa = motorista;
         } else {
             throw new IllegalArgumentException("É necessário informar CNH ou Matrícula.");
         }
@@ -29,6 +33,7 @@ public class PessoaMapper {
         pessoa.setNome(request.nome());
         pessoa.setCpf(request.cpf());
         pessoa.setDataNascimento(request.dataNascimento());
+        pessoa.setEmail(request.email());
 
         return pessoa;
     }
@@ -50,7 +55,8 @@ public class PessoaMapper {
                 entity.getCpf(),
                 entity.getDataNascimento(),
                 matricula,
-                numeroCNH
+                numeroCNH,
+                entity.getEmail()
         );
     }
 }

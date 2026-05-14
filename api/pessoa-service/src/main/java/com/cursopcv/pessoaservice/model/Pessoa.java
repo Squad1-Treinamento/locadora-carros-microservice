@@ -1,6 +1,7 @@
 package com.cursopcv.pessoaservice.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,5 +27,7 @@ public abstract class Pessoa {
     private Date dataNascimento;
     @CPF
     private String cpf;
+    @Email
+    private String email;
     private Sexo sexo;
 }

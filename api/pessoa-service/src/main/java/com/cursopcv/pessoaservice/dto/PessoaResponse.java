@@ -8,5 +8,6 @@ public record PessoaResponse(
         String cpf,
         Date dataNascimento,
         String matricula,
-        String numeroCNH
+        String numeroCNH,
+        String email
 ) {}
