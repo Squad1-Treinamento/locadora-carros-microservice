@@ -1,0 +1,34 @@
+version: '3.8'
+
+name: notification-infrastructure
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+      - DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - LS_LOG=info
+      - LOCALSTACK_HOST=localhost
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_AUTH_TOKEN=<token>
+    volumes:
+      - ./localstack:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+
+  hogmail:
+    image: axllent/mailpit
+    container_name: hogmail
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  db_data:
