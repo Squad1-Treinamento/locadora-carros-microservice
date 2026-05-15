@@ -34,7 +34,7 @@ public class CarroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CarroResponse> atualizar(@RequestBody CarroRequestUpdate carroRequest, Long id){
+    public ResponseEntity<CarroResponse> atualizar(@RequestBody CarroRequestUpdate carroRequest, @PathVariable Long id){
         return ResponseEntity.ok(service.atualizar(id, carroRequest));
     }
 
