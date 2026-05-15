@@ -5,6 +5,7 @@ import com.cursopcv.carroservice.dto.carro.CarroRequestUpdate;
 import com.cursopcv.carroservice.dto.carro.CarroResponse;
 import com.cursopcv.carroservice.service.CarroService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/carros")
+@RequiredArgsConstructor
 public class CarroController {
 
     private final CarroService service;
-
-    public CarroController(CarroService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public ResponseEntity<List<CarroResponse>> findAll() {
