@@ -23,7 +23,7 @@ public class CarroController {
         return ResponseEntity.ok(service.listarTodos());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CarroResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }

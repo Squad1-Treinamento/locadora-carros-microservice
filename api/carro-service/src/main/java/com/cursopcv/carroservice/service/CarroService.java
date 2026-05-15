@@ -69,7 +69,7 @@ public class CarroService {
 
         for (Acessorio acessorio : acessorios) {
             Acessorio acessorioBanco;
-            acessorioBanco = acessorioRepository.findByDescricaoIgnoreCase(acessorio.getDescricao())
+            acessorioBanco = acessorioRepository.findFirstByDescricaoIgnoreCase(acessorio.getDescricao())
                     .orElseGet(() -> acessorioRepository.save(acessorio));
             carro.setModelo(modeloBanco);
 
