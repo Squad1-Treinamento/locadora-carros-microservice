@@ -34,6 +34,7 @@ public class PessoaMapper {
         pessoa.setCpf(request.cpf());
         pessoa.setDataNascimento(request.dataNascimento());
         pessoa.setEmail(request.email());
+        pessoa.setSexo(request.sexo());
 
         return pessoa;
     }
@@ -56,7 +57,8 @@ public class PessoaMapper {
                 entity.getDataNascimento(),
                 matricula,
                 numeroCNH,
-                entity.getEmail()
+                entity.getEmail(),
+                entity.getSexo()
         );
     }
 }

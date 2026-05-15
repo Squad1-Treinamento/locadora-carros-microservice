@@ -1,5 +1,7 @@
 package com.cursopcv.pessoaservice.dto;
 
+import com.cursopcv.pessoaservice.model.Sexo;
+
 import java.util.Date;
 
 public record PessoaResponse(
@@ -9,5 +11,6 @@ public record PessoaResponse(
         Date dataNascimento,
         String matricula,
         String numeroCNH,
-        String email
+        String email,
+        Sexo sexo
 ) {}
