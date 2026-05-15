@@ -5,6 +5,7 @@ import com.cursopcv.carroservice.dto.acessorio.AcessorioRequestCarro;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -14,6 +15,7 @@ public record CarroRequest(
         String placa,
 
         @NotBlank(message = "Chassi não pode estar vazio")
+        @Pattern(regexp = "^[A-HJ-NPR-Z0-9]{17}$", message = "Chassi deve ter 17 caracteres sem as letras I, O e Q")
         String chassi,
 
         @NotBlank(message = "Cor não pode estar vazia")

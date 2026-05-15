@@ -123,7 +123,7 @@ public class CarroService {
     }
 
     public void deleter(Long id) {
-        Carro carro = carroRepository.findById(id).orElseThrow(() -> new EntityNotFoundExeption("Carro com o ID " + id + " não encontrado."));
+        carroRepository.findById(id).orElseThrow(() -> new EntityNotFoundExeption("Carro com o ID " + id + " não encontrado."));
 
         carroRepository.deleteById(id);
     }
