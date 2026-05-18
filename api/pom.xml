@@ -16,5 +16,6 @@
         <module>api-gateway</module>
         <module>notification-consumer-service</module>
         <module>notification-service</module>
+        <module>notification-contracts</module>
     </modules>
 </project>
