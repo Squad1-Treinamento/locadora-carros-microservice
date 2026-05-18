@@ -1,11 +1,13 @@
 package com.cursopcv.notificationservice;
 
+import com.cursopcv.notificationcontracts.dto.*;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/send")
-public class NotificationController {
+public class NotificationController implements NotificationControllerDoc {
 
     private final NotificationService notificationService;
 
@@ -13,28 +15,28 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @Override
     @PostMapping("/cadastro")
-    public ResponseEntity<String> notificarCadastro(@RequestBody String message) {
-        return ResponseEntity.ok(notificationService.notificarCadastro(message));
+    public ResponseEntity<String> notificarCadastro(@RequestBody @Valid CadastroNotificationRequest cadastrado) {
+        return ResponseEntity.ok(notificationService.notificarCadastro(cadastrado));
     }
 
+    @Override
     @PostMapping("/reserva")
-    public ResponseEntity<String> notificarReserva(@RequestBody String message) {
-        return ResponseEntity.ok(notificationService.notificarReserva(message));
+    public ResponseEntity<String> notificarReserva(@RequestBody @Valid ReservaNotificationRequest reserva) {
+        return ResponseEntity.ok(notificationService.notificarReserva(reserva));
     }
 
+    @Override
     @PostMapping("/aluguel")
-    public ResponseEntity<String> notificarAluguel(@RequestBody String message) {
-        return ResponseEntity.ok(notificationService.notificarAluguel(message));
+    public ResponseEntity<String> notificarAluguel(@RequestBody @Valid AluguelNotificationRequest aluguel) {
+        return ResponseEntity.ok(notificationService.notificarAluguel(aluguel));
     }
 
-    @GetMapping
-    public String notificar(@RequestParam String message) {
-        try {
-            notificationService.sendMessage(message);
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-        return "Notificações enviadas para fila!";
+    @Override
+    @PostMapping
+    public ResponseEntity<String> notificar(@RequestBody @Valid CustomNotificationRequest message) {
+        notificationService.sendMessage(new NotificationMessage(NotificationMessage.MessageType.PERSONALIZADA ,message));
+        return ResponseEntity.ok("");
     }
 }

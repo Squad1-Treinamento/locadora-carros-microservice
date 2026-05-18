@@ -20,12 +20,18 @@ public class NotificationConfig {
 
     @Bean
     public SqsClient sqsClient() {
-        return SqsClient.builder()
-                .endpointOverride(URI.create(sqsEndpoint))
-                .region(Region.US_EAST_1)
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create("test", "test")))
-                .build();
+        try {
+            SqsClient sqsClient = SqsClient.builder()
+                    .endpointOverride(URI.create(sqsEndpoint))
+                    .region(Region.US_EAST_1)
+                    .credentialsProvider(StaticCredentialsProvider.create(
+                            AwsBasicCredentials.create("test", "test")))
+                    .build();
+            return sqsClient;
+        } catch (Exception e) {
+            System.out.println("Erro ao criar SQS Client: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Bean

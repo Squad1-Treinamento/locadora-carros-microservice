@@ -1,5 +1,9 @@
 package com.cursopcv.notificationservice;
 
+import com.cursopcv.notificationcontracts.dto.AluguelNotificationRequest;
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
+import com.cursopcv.notificationcontracts.dto.NotificationMessage;
+import com.cursopcv.notificationcontracts.dto.ReservaNotificationRequest;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
@@ -18,30 +22,31 @@ public class NotificationService {
         this.sqsClient = sqsClient;
     }
 
-    public String notificarCadastro(String message) {
-        sendMessage(message);
-        System.out.println("Notificando sobre cadastro: " + message);
+    public String notificarCadastro(CadastroNotificationRequest cadastrado) {
+        sendMessage(new NotificationMessage(NotificationMessage.MessageType.CADASTRO, cadastrado));
+        System.out.println("Notificando sobre cadastro: " + cadastrado);
         return "";
     }
 
-    public String notificarReserva(String message) {
-        sendMessage(message);
-        System.out.println("Notificando reserva: " + message);
+    public String notificarReserva(ReservaNotificationRequest reserva) {
+        sendMessage(new NotificationMessage(NotificationMessage.MessageType.RESERVA, reserva));
+        System.out.println("Notificando reserva: " + reserva);
         return "";
     }
 
-    public String notificarAluguel(String message) {
-        sendMessage(message);
-        System.out.println("Notificando aluguel: " + message);
+    public String notificarAluguel(AluguelNotificationRequest aluguel) {
+        sendMessage(new NotificationMessage(NotificationMessage.MessageType.ALUGUEL, aluguel));
+        System.out.println("Notificando aluguel: " + aluguel);
         return "";
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(NotificationMessage message) {
+        String messageJson =  objectMapper.writeValueAsString(message);
         try {
             sqsClient.sendMessage(
                     SendMessageRequest.builder()
                             .queueUrl(queueUrl)
-                            .messageBody(message)
+                            .messageBody(messageJson)
                             .build());
         } catch (Exception e) {
             throw new RuntimeException(e);

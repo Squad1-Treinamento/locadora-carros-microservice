@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.cursopcv</groupId>
-    <artifactId>notification-consumer-service</artifactId>
+    <artifactId>notification-contracts</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>notification-consumer-service</name>
-    <description>notification-consumer-service</description>
+    <name/>
+    <description/>
     <url/>
     <licenses>
         <license/>
@@ -32,33 +32,13 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail-test</artifactId>
+            <artifactId>spring-boot-starter-validation-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>sqs</artifactId>
-            <version>2.20.133</version>
-        </dependency>
-        <dependency>
-            <groupId>com.cursopcv</groupId>
-            <artifactId>notification-contracts</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
