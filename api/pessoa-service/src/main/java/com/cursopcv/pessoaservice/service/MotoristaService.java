@@ -60,6 +60,13 @@ public class MotoristaService {
             motoristaExistente.setCpf(request.cpf());
         }
 
+        if(!motoristaExistente.getEmail().equals(request.email())){
+            if(pessoaRepository.existsByEmail(request.email())){
+                throw new IllegalArgumentException("O novo email informado já pertence a outro usuário.");
+            }
+            motoristaExistente.setEmail(request.email());
+        }
+
         motoristaExistente.setNome(request.nome());
         motoristaExistente.setDataNascimento(request.dataNascimento());
         motoristaExistente.setSexo(request.sexo());

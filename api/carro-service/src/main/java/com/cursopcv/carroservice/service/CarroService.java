@@ -6,6 +6,7 @@ import com.cursopcv.carroservice.dto.carro.CarroResponse;
 import com.cursopcv.carroservice.exeption.EntityConflitExeption;
 import com.cursopcv.carroservice.exeption.EntityNotFoundExeption;
 import com.cursopcv.carroservice.exeption.EntityNotNullExeption;
+import com.cursopcv.carroservice.exeption.PlacaInvalidFormatException;
 import com.cursopcv.carroservice.mapper.CarroMapper;
 import com.cursopcv.carroservice.model.Acessorio;
 import com.cursopcv.carroservice.model.Carro;
@@ -18,6 +19,7 @@ import com.cursopcv.carroservice.repository.ModeloCarroRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +46,13 @@ public class CarroService {
     public CarroResponse cadastrar(CarroRequest carroRequest) {
         Carro carro = CarroMapper.toEntity(carroRequest);
 
+        boolean placaAntiga = carroRequest.placa().matches("^[A-Z]{3}-[0-9]{4}$");
+        boolean placaMercosul = carroRequest.placa().matches("^[A-Z]{3}[0-9][A-Z][0-9]{2}$");
+
+        if (!placaAntiga && !placaMercosul) {
+            throw new PlacaInvalidFormatException("Placa com formato inválido. Use o padrão antigo (ABC-1234) ou Mercosul (ABC1D23)");
+        }
+
         if (carroRepository.existsByPlaca(carro.getPlaca())) {
             throw new EntityConflitExeption("Carro com a mesma placa já cadastrada");
         }
@@ -69,7 +78,7 @@ public class CarroService {
 
         for (Acessorio acessorio : acessorios) {
             Acessorio acessorioBanco;
-            acessorioBanco = acessorioRepository.findByDescricaoIgnoreCase(acessorio.getDescricao())
+            acessorioBanco = acessorioRepository.findFirstByDescricaoIgnoreCase(acessorio.getDescricao())
                     .orElseGet(() -> acessorioRepository.save(acessorio));
             carro.setModelo(modeloBanco);
 
@@ -83,22 +92,30 @@ public class CarroService {
         Carro carro = carroRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundExeption("Carro com o ID " + id + " não encontrado."));
 
-        if (carroRequest.placa() != null) {
+        if (carroRequest.placa() != null  && !carroRequest.placa().isBlank()) {
+            boolean placaAntiga = carroRequest.placa().matches("^[A-Z]{3}[0-9]{4}$");
+            boolean placaMercosul = carroRequest.placa().matches("^[A-Z]{3}[0-9][A-Z][0-9]{2}$");
+
+            if (!placaAntiga && !placaMercosul) {
+                throw new IllegalArgumentException("Placa inválida. Use o padrão antigo (ABC1234) ou Mercosul (ABC1D23)");
+            }
+
             if (carroRepository.existsByPlaca(carroRequest.placa())) {
                 throw new EntityConflitExeption("Carro com a mesma placa já cadastrada");
             }
+
             carro.setPlaca(carroRequest.placa());
         }
 
-        if (carroRequest.chassi() != null) {
+        if (carroRequest.chassi() != null && !carroRequest.chassi().isBlank()) {
             carro.setChassi(carroRequest.chassi());
         }
 
-        if (carroRequest.cor() != null) {
+        if (carroRequest.cor() != null && !carroRequest.cor().isBlank()) {
             carro.setCor(carroRequest.cor());
         }
 
-        if (carroRequest.valorDiaria() != null) {
+        if (carroRequest.valorDiaria() != null && carroRequest.valorDiaria().compareTo(BigDecimal.ZERO) > 0) {
             carro.setValorDiaria(carroRequest.valorDiaria());
         }
 
@@ -106,7 +123,7 @@ public class CarroService {
     }
 
     public void deleter(Long id) {
-        Carro carro = carroRepository.findById(id).orElseThrow(() -> new EntityNotFoundExeption("Carro com o ID " + id + " não encontrado."));
+        carroRepository.findById(id).orElseThrow(() -> new EntityNotFoundExeption("Carro com o ID " + id + " não encontrado."));
 
         carroRepository.deleteById(id);
     }

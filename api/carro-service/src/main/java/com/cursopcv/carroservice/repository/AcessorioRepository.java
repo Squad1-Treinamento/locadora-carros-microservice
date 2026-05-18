@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AcessorioRepository extends JpaRepository<Acessorio,Integer> {
-    Optional<Acessorio> findByDescricaoIgnoreCase(String descricao);
+    Optional<Acessorio> findFirstByDescricaoIgnoreCase(String descricao);
 }
