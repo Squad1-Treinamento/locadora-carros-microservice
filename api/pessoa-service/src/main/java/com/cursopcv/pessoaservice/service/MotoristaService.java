@@ -7,6 +7,7 @@ import com.cursopcv.pessoaservice.model.Motorista;
 import com.cursopcv.pessoaservice.model.Pessoa;
 import com.cursopcv.pessoaservice.repository.MotoristaRepository;
 import com.cursopcv.pessoaservice.repository.PessoaRepository;
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,13 @@ public class MotoristaService {
     private MotoristaRepository motoristaRepository;
     private PessoaRepository pessoaRepository;
     private PessoaMapper pessoaMapper;
+    private NotificationClient notificationClient;
 
-    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
+    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
         this.motoristaRepository = motoristaRepository;
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
+        this.notificationClient = notificationClient;
     }
 
     public PessoaResponse cadastrar(PessoaRequest motorista) {
@@ -37,6 +40,10 @@ public class MotoristaService {
 
         Pessoa pessoaNova = pessoaMapper.toEntity(motorista);
         Motorista motoristaSalvo = motoristaRepository.save((Motorista) pessoaNova);
+
+        // Send notification after successful save
+        CadastroNotificationRequest cadastroRequest = PessoaMapper.toCadastroNotificationRequest(motoristaSalvo);
+        notificationClient.notificarCadastro(cadastroRequest);
 
         return pessoaMapper.toResponse(motoristaSalvo);
     }

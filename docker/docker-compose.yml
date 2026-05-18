@@ -17,11 +17,16 @@ services:
       - LOCALSTACK_HOST=localhost
       - DEBUG=1
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - LOCALSTACK_AUTH_TOKEN=<token>
+      - LOCALSTACK_AUTH_TOKEN=${AUTH_TOKEN}
     volumes:
       - ./localstack:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
       - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+    command: >
+      sh -c "
+        sleep 5 &&
+        awslocal sqs create-queue --queue-name locadora-notifications || true
+      "
 
   hogmail:
     image: axllent/mailpit
@@ -34,9 +39,9 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root123
+      POSTGRES_DB: locadora_carrosdb
     ports:
       - "5433:5432"
     volumes:
