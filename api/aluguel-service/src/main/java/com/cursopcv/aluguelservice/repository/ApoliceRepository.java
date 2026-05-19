@@ -1,4 +1,7 @@
 package com.cursopcv.aluguelservice.repository;
 
-public class ApoliceRepository {
+import com.cursopcv.aluguelservice.model.ApoliceSeguro;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ApoliceRepository extends JpaRepository<ApoliceSeguro, Integer> {
 }

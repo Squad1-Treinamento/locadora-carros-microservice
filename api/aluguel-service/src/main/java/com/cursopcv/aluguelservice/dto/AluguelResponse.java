@@ -6,17 +6,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record CheckoutResponse(
-        Integer idAluguel,
-        String numeroTransacao,
-        StatusAluguel statusAluguel,
-        String statusPagamento,
-        String mensagem,
-
+public record AluguelResponse(
+        Integer id,
         Integer idPessoa,
         Long idCarro,
-        String nomeCarro,
-        String placaCarro,
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         Date dataEntrega,
@@ -24,10 +17,10 @@ public record CheckoutResponse(
         @JsonFormat(pattern = "yyyy-MM-dd")
         Date dataDevolucao,
 
+        BigDecimal valorDiaria,
         Integer quantidadeDias,
         BigDecimal valorTotal,
 
-        ApoliceSeguroResponse apoliceSeguro,
-        String termos
-) {
-}
+        StatusAluguel status,
+        ApoliceSeguroResponse apoliceSeguro
+){}
