@@ -7,6 +7,8 @@ import com.cursopcv.aluguelservice.model.Aluguel;
 import com.cursopcv.aluguelservice.model.StatusAluguel;
 import com.cursopcv.aluguelservice.repository.AluguelRepository;
 import com.cursopcv.carroservice.dto.carro.CarroResponse;
+import com.cursopcv.notificationcontracts.dto.AluguelNotificationRequest;
+import com.cursopcv.notificationcontracts.dto.ReservaNotificationRequest;
 import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +18,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -73,7 +77,7 @@ public class AluguelService {
             throw new DatasInvalidasException("A data de devolução deve ser posterior à data de entrega.");
         }
 
-        pessoaWebClient.get()
+        PessoaResponse motorista = pessoaWebClient.get()
                 .uri("/motoristas/{id}", request.idMotorista())
                 .retrieve()
                 .bodyToMono(PessoaResponse.class)
@@ -108,7 +112,15 @@ public class AluguelService {
                 .add(request.apoliceSeguro().custoApolice());
 
         Aluguel aluguel = aluguelMapper.toEntity(request, carro.valorDiaria(), quantidadeDias, valorTotal);
-        return aluguelMapper.toResponse(aluguelRepository.save(aluguel));
+        AluguelResponse response = aluguelMapper.toResponse(aluguelRepository.save(aluguel));
+
+        try {
+            notificarReserva(motorista, carro);
+        } catch (Exception e) {
+            log.warn("Falha ao enviar notificação de reserva: {}", e.getMessage());
+        }
+
+        return response;
     }
 
     public ResumoAluguelResponse obterResumo(Integer idAluguel) {
@@ -190,14 +202,9 @@ public class AluguelService {
                 .block();
 
         try {
-            notificationWebClient.post()
-                    .uri("/send/aluguel")
-                    .bodyValue(new NotificacaoRequest(motorista, carro))
-                    .retrieve()
-                    .toBodilessEntity()
-                    .block();
+            notificarAluguel(motorista, carro);
         } catch (Exception e) {
-            log.warn("Falha ao enviar notificação: {}", e.getMessage());
+            log.warn("Falha ao enviar notificação de aluguel: {}", e.getMessage());
         }
 
         return new CheckoutResponse(
@@ -268,7 +275,109 @@ public class AluguelService {
         return aluguelMapper.toResponse(aluguel);
     }
 
-    private record DisponibilidadeRequest(boolean disponivel) {}
+    private void notificarReserva(PessoaResponse motorista, CarroResponse carro) {
+        ReservaNotificationRequest.Pessoa pessoa = new ReservaNotificationRequest.Pessoa(
+                motorista.nome(),
+                motorista.cpf(),
+                motorista.dataNascimento(),
+                motorista.matricula(),
+                motorista.numeroCNH(),
+                motorista.email()
+        );
 
-    private record NotificacaoRequest(PessoaResponse pessoa, CarroResponse carro) {}
+        Set<ReservaNotificationRequest.Carro.Acessorio> acessorios = carro.acessorios().stream()
+                .map(a -> new ReservaNotificationRequest.Carro.Acessorio(a.id(), a.descricao()))
+                .collect(Collectors.toSet());
+
+        ReservaNotificationRequest.Carro.ModeloCarro.FabricanteResponse fabricante =
+                new ReservaNotificationRequest.Carro.ModeloCarro.FabricanteResponse(
+                        carro.modelo().fabricante().id(),
+                        carro.modelo().fabricante().nome()
+                );
+
+        ReservaNotificationRequest.Carro.ModeloCarro.Categoria categoria =
+                ReservaNotificationRequest.Carro.ModeloCarro.Categoria.valueOf(
+                        carro.modelo().categoria().name()
+                );
+
+        ReservaNotificationRequest.Carro.ModeloCarro modelo = new ReservaNotificationRequest.Carro.ModeloCarro(
+                carro.modelo().id(),
+                carro.modelo().descricao(),
+                categoria,
+                fabricante
+        );
+
+        ReservaNotificationRequest.Carro carroNotification = new ReservaNotificationRequest.Carro(
+                carro.id(),
+                carro.placa(),
+                carro.chassi(),
+                carro.cor(),
+                carro.valorDiaria(),
+                modelo,
+                acessorios
+        );
+
+        ReservaNotificationRequest reservaNotification = new ReservaNotificationRequest(pessoa, carroNotification);
+
+        notificationWebClient.post()
+                .uri("/send/reserva")
+                .bodyValue(reservaNotification)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+    }
+
+    private void notificarAluguel(PessoaResponse motorista, CarroResponse carro) {
+        AluguelNotificationRequest.Pessoa pessoa = new AluguelNotificationRequest.Pessoa(
+                motorista.nome(),
+                motorista.cpf(),
+                motorista.dataNascimento(),
+                motorista.matricula(),
+                motorista.numeroCNH(),
+                motorista.email()
+        );
+
+        Set<AluguelNotificationRequest.Carro.Acessorio> acessorios = carro.acessorios().stream()
+                .map(a -> new AluguelNotificationRequest.Carro.Acessorio(a.id(), a.descricao()))
+                .collect(Collectors.toSet());
+
+        AluguelNotificationRequest.Carro.ModeloCarro.FabricanteResponse fabricante =
+                new AluguelNotificationRequest.Carro.ModeloCarro.FabricanteResponse(
+                        carro.modelo().fabricante().id(),
+                        carro.modelo().fabricante().nome()
+                );
+
+        AluguelNotificationRequest.Carro.ModeloCarro.Categoria categoria =
+                AluguelNotificationRequest.Carro.ModeloCarro.Categoria.valueOf(
+                        carro.modelo().categoria().name()
+                );
+
+        AluguelNotificationRequest.Carro.ModeloCarro modelo = new AluguelNotificationRequest.Carro.ModeloCarro(
+                carro.modelo().id(),
+                carro.modelo().descricao(),
+                categoria,
+                fabricante
+        );
+
+        AluguelNotificationRequest.Carro carroNotification = new AluguelNotificationRequest.Carro(
+                carro.id(),
+                carro.placa(),
+                carro.chassi(),
+                carro.cor(),
+                carro.valorDiaria(),
+                modelo,
+                acessorios
+        );
+
+        AluguelNotificationRequest aluguelNotification = new AluguelNotificationRequest(pessoa, carroNotification);
+
+        notificationWebClient.post()
+                .uri("/send/aluguel")
+                .bodyValue(aluguelNotification)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+    }
+
+    private record DisponibilidadeRequest(boolean disponivel) {}
 }
