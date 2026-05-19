@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "carros")
-@Entity
+@Entity(name = "acessorios")
 public class Acessorio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
