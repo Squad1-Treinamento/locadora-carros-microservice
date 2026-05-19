@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "acessorios")
-@Entity
+@Entity(name = "carros")
 public class Carro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,10 @@ public class Carro {
     private String chassi;
     private String cor;
     private BigDecimal valorDiaria;
-    @ManyToOne(cascade = {CascadeType.REMOVE})
+    @Column(columnDefinition = "TEXT")
+    private String imagemUrl;
+    private boolean disponivel;
+    @ManyToOne
     @JoinColumn(name = "modelo_id")
     private ModeloCarro modelo;
     @ManyToMany

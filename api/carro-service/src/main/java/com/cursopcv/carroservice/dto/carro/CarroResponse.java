@@ -12,6 +12,8 @@ public record CarroResponse(
         String chassi,
         String cor,
         BigDecimal valorDiaria,
+        String imagemUrl,
+        boolean disponivel,
         ModeloCarroResponse modelo,
         Set<AcessorioResponse> acessorios
 ){}

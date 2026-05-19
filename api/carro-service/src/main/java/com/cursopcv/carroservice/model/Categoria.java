@@ -14,7 +14,7 @@ public enum Categoria {
 
     public static Categoria toStringValue(String categoria) {
         try {
-            return Categoria.valueOf(categoria.replace(" ", "_").toUpperCase());
+            return Categoria.valueOf(categoria.stripTrailing().replace(" ", "_").toUpperCase());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new CategoriaInvalidExeption("A categoria passada é invalida ou não corresponde a uma categoria existente");
         }

@@ -25,8 +25,11 @@ public record CarroRequest(
         @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
         BigDecimal valorDiaria,
 
+        @NotBlank(message = "URL da imagem não pode estar vazia")
+        String imagemUrl,
+
         @NotNull(message = "Modelo não estar vazio")
-        ModeloCarroRequest modelo,
+        Long modeloId,
 
         Set<AcessorioRequestCarro> acessorios
 ){}
