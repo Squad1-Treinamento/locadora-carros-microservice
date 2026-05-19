@@ -1,16 +1,19 @@
-server.port=8082
-spring.application.name=usuario-service
+server.port=8081
+spring.application.name=motorista-service
 
 # PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5433/locadora-db
-spring.datasource.username=SEU_USUARIO
-spring.datasource.password=SUA_SENHA
+spring.datasource.url=jdbc:postgresql://localhost:5433/${DB_NAME}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=true
+
+# Notification Service
+notification.service.url=http://localhost:8095
 
 # jwt.secret=nhfc6HAxsZSzhyqZrVd7ANzR8zKLh2+u9gac7Mc3MCqcDoVZzQyXqzZYEKFXCoP9l6gkpi+VDiEZtD3eBBf4Eg==
 # spring.security.jwt.expiration=3600000
