@@ -17,12 +17,14 @@ public class MotoristaService {
     private final PessoaRepository pessoaRepository;
     private final PessoaMapper pessoaMapper;
     private final NotificationClient notificationClient;
+    private final PessoaService pessoaService;
 
-    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
+    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient, PessoaService pessoaService) {
         this.motoristaRepository = motoristaRepository;
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
         this.notificationClient = notificationClient;
+        this.pessoaService = pessoaService;
     }
 
     public PessoaResponse cadastrar(PessoaRequest motorista) {
@@ -60,14 +62,14 @@ public class MotoristaService {
                 .orElseThrow(() -> new EntityNotFoundException("Motorista não existe!"));
 
         if (!motoristaExistente.getCpf().equals(request.cpf())) {
-            if (pessoaRepository.existsByCpf(request.cpf())) {
+            if (pessoaService.existePorCpf(request.cpf())) {
                 throw new IllegalArgumentException("O novo CPF informado já pertence a outro usuário.");
             }
             motoristaExistente.setCpf(request.cpf());
         }
 
         if(!motoristaExistente.getEmail().equals(request.email())){
-            if(pessoaRepository.existsByEmail(request.email())){
+            if(pessoaService.existePorEmail(request.email())){
                 throw new IllegalArgumentException("O novo email informado já pertence a outro usuário.");
             }
             motoristaExistente.setEmail(request.email());
