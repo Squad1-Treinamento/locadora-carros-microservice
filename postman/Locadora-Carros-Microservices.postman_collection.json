@@ -128,7 +128,7 @@
       ]
     },
     {
-      "name": "CARRO-SERVICE (8082)",
+      "name": "CARRO-SERVICE (8083)",
       "item": [
         {
           "name": "Fabricante - Criar",
@@ -160,11 +160,11 @@
               "raw": "{\n  \"nome\": \"Toyota\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/admin/fabricantes",
+              "raw": "http://localhost:8083/fabricantes",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "fabricantes"]
+              "port": "8083",
+              "path": ["fabricantes"]
             }
           }
         },
@@ -190,11 +190,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/admin/fabricantes",
+              "raw": "http://localhost:8083/fabricantes",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "fabricantes"]
+              "port": "8083",
+              "path": ["fabricantes"]
             }
           }
         },
@@ -228,11 +228,11 @@
               "raw": "{\n  \"descricao\": \"Corolla\",\n  \"categoria\": \"SEDAN_MEDIO\",\n  \"fabricanteId\": 1\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/admin/modelos-carros",
+              "raw": "http://localhost:8083/modelos-carros",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "modelos-carros"]
+              "port": "8083",
+              "path": ["modelos-carros"]
             }
           }
         },
@@ -258,11 +258,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/admin/modelos-carros",
+              "raw": "http://localhost:8083/modelos-carros",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "modelos-carros"]
+              "port": "8083",
+              "path": ["modelos-carros"]
             }
           }
         },
@@ -296,11 +296,11 @@
               "raw": "{\n  \"descricao\": \"Ar Condicionado\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/admin/acessorios",
+              "raw": "http://localhost:8083/acessorios",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "acessorios"]
+              "port": "8083",
+              "path": ["acessorios"]
             }
           }
         },
@@ -326,11 +326,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/admin/acessorios",
+              "raw": "http://localhost:8083/acessorios",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
-              "path": ["admin", "acessorios"]
+              "port": "8083",
+              "path": ["acessorios"]
             }
           }
         },
@@ -369,10 +369,10 @@
               "raw": "{\n  \"placa\": \"PR-001-ABC\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Branco\",\n  \"valorDiaria\": 150.00,\n  \"imagemUrl\": \"https://images.example.com/corolla.jpg\",\n  \"modeloId\": 1,\n  \"acessorios\": [\n    {\"id\": 1}\n  ]\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/carros",
+              "raw": "http://localhost:8083/carros",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros"]
             }
           }
@@ -399,10 +399,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros",
+              "raw": "http://localhost:8083/carros",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros"]
             }
           }
@@ -432,10 +432,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/1",
+              "raw": "http://localhost:8083/carros/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "1"]
             }
           }
@@ -465,10 +465,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/disponiveis",
+              "raw": "http://localhost:8083/carros/disponiveis",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "disponiveis"]
             }
           }
@@ -498,10 +498,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/disponiveis/categoria/SEDAN_MEDIO",
+              "raw": "http://localhost:8083/carros/disponiveis/categoria/SEDAN_MEDIO",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "disponiveis", "categoria", "SEDAN_MEDIO"]
             }
           }
@@ -524,10 +524,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/disponiveis/acessorio/1",
+              "raw": "http://localhost:8083/carros/disponiveis/acessorio/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "disponiveis", "acessorio", "1"]
             }
           }
@@ -550,10 +550,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/disponiveis/filtro?categoria=SEDAN_MEDIO&acessorioId=1",
+              "raw": "http://localhost:8083/carros/disponiveis/filtro?categoria=SEDAN_MEDIO&acessorioId=1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "disponiveis", "filtro"],
               "query": [
                 {
@@ -600,10 +600,10 @@
               "raw": "{\n  \"placa\": \"PR-001-ABC\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Preto\",\n  \"valorDiaria\": 160.00,\n  \"imagemUrl\": \"https://images.example.com/corolla-preto.jpg\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/carros/1",
+              "raw": "http://localhost:8083/carros/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "1"]
             }
           }
@@ -635,10 +635,10 @@
               "raw": "{\n  \"disponivel\": false\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/carros/1/disponibilidade",
+              "raw": "http://localhost:8083/carros/1/disponibilidade",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "1", "disponibilidade"]
             }
           }
@@ -661,10 +661,10 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8082/carros/1",
+              "raw": "http://localhost:8083/carros/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros", "1"]
             }
           }
@@ -672,7 +672,7 @@
       ]
     },
     {
-      "name": "ALUGUEL-SERVICE (8083)",
+      "name": "ALUGUEL-SERVICE (8084)",
       "item": [
         {
           "name": "Aluguel - Solicitar",
@@ -715,10 +715,10 @@
               "raw": "{\n  \"idMotorista\": 1,\n  \"idCarro\": 5,\n  \"dataEntrega\": \"2026-06-01\",\n  \"dataDevolucao\": \"2026-06-08\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:8083/alugueis",
+              "raw": "http://localhost:8084/alugueis",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis"]
             }
           }
@@ -745,10 +745,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis",
+              "raw": "http://localhost:8084/alugueis",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis"]
             }
           }
@@ -781,10 +781,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis/1",
+              "raw": "http://localhost:8084/alugueis/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "1"]
             }
           }
@@ -811,10 +811,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis/motorista/1",
+              "raw": "http://localhost:8084/alugueis/motorista/1",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "motorista", "1"]
             }
           }
@@ -844,10 +844,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis/1/resumo",
+              "raw": "http://localhost:8084/alugueis/1/resumo",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "1", "resumo"]
             }
           }
@@ -884,10 +884,10 @@
               "raw": "{\n  \"tipoPagamento\": \"CREDITO\",\n  \"numeroParcelas\": 1\n}"
             },
             "url": {
-              "raw": "http://localhost:8083/alugueis/1/checkout",
+              "raw": "http://localhost:8084/alugueis/1/checkout",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "1", "checkout"]
             }
           }
@@ -915,10 +915,10 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis/1/cancelar",
+              "raw": "http://localhost:8084/alugueis/1/cancelar",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "1", "cancelar"]
             }
           }
@@ -946,10 +946,10 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "http://localhost:8083/alugueis/1/finalizar",
+              "raw": "http://localhost:8084/alugueis/1/finalizar",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis", "1", "finalizar"]
             }
           }
@@ -1012,10 +1012,10 @@
               "raw": "{\n  \"placa\": \"INVALIDO\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Branco\",\n  \"valorDiaria\": 150.00,\n  \"imagemUrl\": \"https://images.example.com/test.jpg\",\n  \"modeloId\": 1,\n  \"acessorios\": []\n}"
             },
             "url": {
-              "raw": "http://localhost:8082/carros",
+              "raw": "http://localhost:8083/carros",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8082",
+              "port": "8083",
               "path": ["carros"]
             }
           }
@@ -1047,10 +1047,10 @@
               "raw": "{\n  \"idMotorista\": 999999,\n  \"idCarro\": 1,\n  \"dataEntrega\": \"2026-06-01\",\n  \"dataDevolucao\": \"2026-06-08\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:8083/alugueis",
+              "raw": "http://localhost:8084/alugueis",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis"]
             }
           }
@@ -1082,10 +1082,10 @@
               "raw": "{\n  \"idMotorista\": 1,\n  \"idCarro\": 1,\n  \"dataEntrega\": \"2026-06-08\",\n  \"dataDevolucao\": \"2026-06-01\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:8083/alugueis",
+              "raw": "http://localhost:8084/alugueis",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "8083",
+              "port": "8084",
               "path": ["alugueis"]
             }
           }
