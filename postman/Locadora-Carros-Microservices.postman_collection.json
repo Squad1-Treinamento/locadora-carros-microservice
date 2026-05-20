@@ -1,0 +1,1097 @@
+{
+  "info": {
+    "name": "Locadora de Carros - Microserviços",
+    "description": "Collection completa de testes para os endpoints da aplicação de locadora de veículos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "PESSOA-SERVICE (8081)",
+      "item": [
+        {
+          "name": "Motorista - Cadastrar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response tem ID\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.id).to.be.a('number');",
+                  "});",
+                  "",
+                  "pm.test(\"Response contém nome e email\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nome).to.eql(\"João Silva\");",
+                  "    pm.expect(jsonData.email).to.eql(\"joao.silva@example.com\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"joao.silva@example.com\",\n  \"dataNascimento\": \"1990-01-15\",\n  \"numeroCNH\": \"98765432100\",\n  \"sexo\": \"M\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/motoristas",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["motoristas"]
+            }
+          }
+        },
+        {
+          "name": "Motorista - Buscar por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response tem estrutura correta\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.all.keys('id', 'nome', 'cpf', 'dataNascimento', 'matricula', 'numeroCNH', 'email', 'sexo');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/motoristas/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["motoristas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Motorista - Atualizar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Motorista atualizado com sucesso\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nome).to.eql(\"João Silva Atualizado\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Atualizado\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"joao.silva.updated@example.com\",\n  \"dataNascimento\": \"1990-01-15\",\n  \"numeroCNH\": \"98765432100\",\n  \"sexo\": \"M\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/motoristas/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["motoristas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CARRO-SERVICE (8082)",
+      "item": [
+        {
+          "name": "Fabricante - Criar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 or 200\", function () {",
+                  "    pm.response.to.have.status.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "let fabricanteId = pm.response.json().id;",
+                  "pm.globals.set('fabricanteId', fabricanteId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Toyota\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/admin/fabricantes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "fabricantes"]
+            }
+          }
+        },
+        {
+          "name": "Fabricante - Listar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/admin/fabricantes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "fabricantes"]
+            }
+          }
+        },
+        {
+          "name": "Modelo Carro - Criar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 or 200\", function () {",
+                  "    pm.response.to.have.status.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "let modeloId = pm.response.json().id;",
+                  "pm.globals.set('modeloId', modeloId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Corolla\",\n  \"categoria\": \"SEDAN_MEDIO\",\n  \"fabricanteId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/admin/modelos-carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "modelos-carros"]
+            }
+          }
+        },
+        {
+          "name": "Modelo Carro - Listar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/admin/modelos-carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "modelos-carros"]
+            }
+          }
+        },
+        {
+          "name": "Acessório - Criar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 ou 200\", function () {",
+                  "    pm.response.to.have.status.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "let acessorioId = pm.response.json().id;",
+                  "pm.globals.set('acessorioId', acessorioId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Ar Condicionado\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/admin/acessorios",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "acessorios"]
+            }
+          }
+        },
+        {
+          "name": "Acessório - Listar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/admin/acessorios",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["admin", "acessorios"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Cadastrar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "let carroId = pm.response.json().id;",
+                  "pm.globals.set('carroId', carroId);",
+                  "",
+                  "pm.test(\"Carro cadastrado com placa\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.placa).to.eql('PR-001-ABC');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"PR-001-ABC\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Branco\",\n  \"valorDiaria\": 150.00,\n  \"imagemUrl\": \"https://images.example.com/corolla.jpg\",\n  \"modeloId\": 1,\n  \"acessorios\": [\n    {\"id\": 1}\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Listar todos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Buscar por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response tem estrutura de carro\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('placa');",
+                  "    pm.expect(jsonData).to.have.property('valorDiaria');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "1"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Listar Disponíveis",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos carros têm disponivel = true\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    jsonData.forEach(carro => {",
+                  "        pm.expect(carro.disponivel).to.eql(true);",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/disponiveis",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "disponiveis"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Filtrar por Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos carros têm categoria SEDAN_MEDIO\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    jsonData.forEach(carro => {",
+                  "        pm.expect(carro.modelo.categoria).to.eql('SEDAN_MEDIO');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/disponiveis/categoria/SEDAN_MEDIO",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "disponiveis", "categoria", "SEDAN_MEDIO"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Filtrar por Acessório",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/disponiveis/acessorio/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "disponiveis", "acessorio", "1"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Filtro Avançado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/disponiveis/filtro?categoria=SEDAN_MEDIO&acessorioId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "disponiveis", "filtro"],
+              "query": [
+                {
+                  "key": "categoria",
+                  "value": "SEDAN_MEDIO"
+                },
+                {
+                  "key": "acessorioId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Carro - Atualizar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Carro atualizado com nova cor\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cor).to.eql('Preto');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"PR-001-ABC\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Preto\",\n  \"valorDiaria\": 160.00,\n  \"imagemUrl\": \"https://images.example.com/corolla-preto.jpg\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/carros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "1"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Atualizar Disponibilidade",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"disponivel\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/carros/1/disponibilidade",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "1", "disponibilidade"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Deletar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 204 ou 200\", function () {",
+                  "    pm.response.to.have.status.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/carros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ALUGUEL-SERVICE (8083)",
+      "item": [
+        {
+          "name": "Aluguel - Solicitar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "let aluguelId = pm.response.json().id;",
+                  "pm.globals.set('aluguelId', aluguelId);",
+                  "",
+                  "pm.test(\"Aluguel criado com status PENDENTE\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('PENDENTE');",
+                  "});",
+                  "",
+                  "pm.test(\"Aluguel tem valor total calculado\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.valorTotal).to.be.a('number');",
+                  "    pm.expect(jsonData.valorTotal).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMotorista\": 1,\n  \"idCarro\": 5,\n  \"dataEntrega\": \"2026-06-01\",\n  \"dataDevolucao\": \"2026-06-08\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/alugueis",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Listar todos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Buscar por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response tem estrutura de aluguel\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('idMotorista');",
+                  "    pm.expect(jsonData).to.have.property('idCarro');",
+                  "    pm.expect(jsonData).to.have.property('dataEntrega');",
+                  "    pm.expect(jsonData).to.have.property('dataDevolucao');",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "1"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Listar por Motorista",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response é um array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis/motorista/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "motorista", "1"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Obter Resumo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Resumo tem informações de custo\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('valorDiaria');",
+                  "    pm.expect(jsonData).to.have.property('quantidadeDias');",
+                  "    pm.expect(jsonData).to.have.property('valorTotal');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis/1/resumo",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "1", "resumo"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Efetuar Checkout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Checkout retorna confirmação\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoPagamento\": \"CREDITO\",\n  \"numeroParcelas\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/alugueis/1/checkout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "1", "checkout"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Cancelar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Aluguel cancelado com status CANCELADO\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('CANCELADO');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis/1/cancelar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "1", "cancelar"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Finalizar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Aluguel finalizado com status FINALIZADO\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('FINALIZADO');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/alugueis/1/finalizar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis", "1", "finalizar"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "TESTES DE ERRO",
+      "item": [
+        {
+          "name": "Motorista - Buscar ID inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/motoristas/999999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["motoristas", "999999"]
+            }
+          }
+        },
+        {
+          "name": "Carro - Cadastrar com placa inválida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"INVALIDO\",\n  \"chassi\": \"1G1FB1S52D1234567\",\n  \"cor\": \"Branco\",\n  \"valorDiaria\": 150.00,\n  \"imagemUrl\": \"https://images.example.com/test.jpg\",\n  \"modeloId\": 1,\n  \"acessorios\": []\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["carros"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Com motorista inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 ou 404\", function () {",
+                  "    pm.response.to.have.status.oneOf([400, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMotorista\": 999999,\n  \"idCarro\": 1,\n  \"dataEntrega\": \"2026-06-01\",\n  \"dataDevolucao\": \"2026-06-08\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/alugueis",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis"]
+            }
+          }
+        },
+        {
+          "name": "Aluguel - Com dataDevolucao anterior a dataEntrega",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMotorista\": 1,\n  \"idCarro\": 1,\n  \"dataEntrega\": \"2026-06-08\",\n  \"dataDevolucao\": \"2026-06-01\",\n  \"apoliceSeguro\": {\n    \"valorFranquia\": 500.00,\n    \"protecaoTerceiro\": true,\n    \"protecaoCausasNaturais\": true,\n    \"protecaoRoubo\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/alugueis",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["alugueis"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
