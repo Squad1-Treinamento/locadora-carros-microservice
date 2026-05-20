@@ -8,23 +8,22 @@ import com.cursopcv.pessoaservice.model.Motorista;
 import com.cursopcv.pessoaservice.model.Pessoa;
 import com.cursopcv.pessoaservice.repository.MotoristaRepository;
 import com.cursopcv.pessoaservice.repository.PessoaRepository;
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MotoristaService {
-    private final MotoristaRepository motoristaRepository;
-    private final PessoaRepository pessoaRepository;
-    private final PessoaMapper pessoaMapper;
-    private final NotificationClient notificationClient;
-    private final PessoaService pessoaService;
+    private MotoristaRepository motoristaRepository;
+    private PessoaRepository pessoaRepository;
+    private PessoaMapper pessoaMapper;
+    private NotificationClient notificationClient;
 
-    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient, PessoaService pessoaService) {
+    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
         this.motoristaRepository = motoristaRepository;
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
         this.notificationClient = notificationClient;
-        this.pessoaService = pessoaService;
     }
 
     public PessoaResponse cadastrar(PessoaRequest motorista) {

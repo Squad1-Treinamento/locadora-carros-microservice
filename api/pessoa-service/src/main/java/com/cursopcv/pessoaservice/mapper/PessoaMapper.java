@@ -6,6 +6,7 @@ import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import com.cursopcv.pessoaservice.model.Funcionario;
 import com.cursopcv.pessoaservice.model.Motorista;
 import com.cursopcv.pessoaservice.model.Pessoa;
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -73,6 +74,24 @@ public class PessoaMapper {
                 numeroCNH,
                 entity.getEmail(),
                 entity.getSexo()
+        );
+    }
+
+    public static CadastroNotificationRequest toCadastroNotificationRequest(Pessoa pessoa) {
+        if (pessoa == null) return null;
+
+        String numeroCNH = null;
+        if (pessoa instanceof Motorista motorista) {
+            numeroCNH = motorista.getNumeroCNH();
+        }
+
+        return new CadastroNotificationRequest(
+                pessoa.getNome(),
+                pessoa.getCpf(),
+                pessoa.getDataNascimento(),
+                null,
+                numeroCNH,
+                pessoa.getEmail()
         );
     }
 }
