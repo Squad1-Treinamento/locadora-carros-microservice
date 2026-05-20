@@ -19,8 +19,8 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_AUTH_TOKEN=${AUTH_TOKEN}
     volumes:
+      - ./init-aws:/etc/localstack/init/ready.d
       - ./localstack:/var/lib/localstack
-      - /var/run/docker.sock:/var/run/docker.sock
   hogmail:
     image: axllent/mailpit
     container_name: hogmail
