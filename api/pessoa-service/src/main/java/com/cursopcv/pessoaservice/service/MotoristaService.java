@@ -18,6 +18,7 @@ public class MotoristaService {
     private PessoaRepository pessoaRepository;
     private PessoaMapper pessoaMapper;
     private NotificationClient notificationClient;
+    private PessoaService pessoaService;
 
     public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
         this.motoristaRepository = motoristaRepository;
