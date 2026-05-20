@@ -1,5 +1,6 @@
 package com.cursopcv.pessoaservice.service;
 
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import com.cursopcv.pessoaservice.dto.PessoaRequest;
 import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import com.cursopcv.pessoaservice.mapper.PessoaMapper;
@@ -12,14 +13,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MotoristaService {
-    private MotoristaRepository motoristaRepository;
-    private PessoaRepository pessoaRepository;
-    private PessoaMapper pessoaMapper;
+    private final MotoristaRepository motoristaRepository;
+    private final PessoaRepository pessoaRepository;
+    private final PessoaMapper pessoaMapper;
+    private final NotificationClient notificationClient;
 
-    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
+    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
         this.motoristaRepository = motoristaRepository;
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
+        this.notificationClient = notificationClient;
     }
 
     public PessoaResponse cadastrar(PessoaRequest motorista) {
@@ -37,6 +40,9 @@ public class MotoristaService {
 
         Pessoa pessoaNova = pessoaMapper.toEntity(motorista);
         Motorista motoristaSalvo = motoristaRepository.save((Motorista) pessoaNova);
+
+        CadastroNotificationRequest cadastroRequest = PessoaMapper.toCadastroNotificationRequest(motoristaSalvo);
+        notificationClient.notificarCadastro(cadastroRequest);
 
         return pessoaMapper.toResponse(motoristaSalvo);
     }
@@ -76,3 +82,4 @@ public class MotoristaService {
         return pessoaMapper.toResponse(motoristaSalvo);
     }
 }
+
