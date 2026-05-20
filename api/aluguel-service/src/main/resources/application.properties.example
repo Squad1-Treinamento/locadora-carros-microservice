@@ -15,5 +15,7 @@ spring.jpa.properties.hibernate.format_sql=true
 # Notification Service
 notification.service.url=http://localhost:8095
 
+aluguel.termos=Ao confirmar o aluguel, o cliente declara ter lido e concordado com todos os termos e condicoes da locadora, responsabilizando-se pelo veiculo durante o periodo de locacao e pelo pagamento dos valores acordados, incluindo eventuais multas e danos.
+
 # jwt.secret=nhfc6HAxsZSzhyqZrVd7ANzR8zKLh2+u9gac7Mc3MCqcDoVZzQyXqzZYEKFXCoP9l6gkpi+VDiEZtD3eBBf4Eg==
 # spring.security.jwt.expiration=3600000
