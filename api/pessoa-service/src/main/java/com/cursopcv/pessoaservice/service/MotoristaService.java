@@ -20,11 +20,12 @@ public class MotoristaService {
     private NotificationClient notificationClient;
     private PessoaService pessoaService;
 
-    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient) {
+    public MotoristaService(MotoristaRepository motoristaRepository, PessoaRepository pessoaRepository, PessoaMapper pessoaMapper, NotificationClient notificationClient, PessoaService pessoaService) {
         this.motoristaRepository = motoristaRepository;
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
         this.notificationClient = notificationClient;
+        this.pessoaService = pessoaService;
     }
 
     public PessoaResponse cadastrar(PessoaRequest motorista) {
