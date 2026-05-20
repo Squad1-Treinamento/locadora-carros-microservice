@@ -19,7 +19,6 @@ public class AluguelMapper {
         apolice.setProtecaoCausasNaturais(request.protecaoCausasNaturais());
         apolice.setProtecaoRoubo(request.protecaoRoubo());
         apolice.setValorFranquia(request.valorFranquia());
-        apolice.setCustoApolice(request.custoApolice());
         return apolice;
     }
 
@@ -30,8 +29,7 @@ public class AluguelMapper {
                 entity.getProtecaoTerceiro(),
                 entity.getProtecaoCausasNaturais(),
                 entity.getProtecaoRoubo(),
-                entity.getValorFranquia(),
-                entity.getCustoApolice()
+                entity.getValorFranquia()
         );
     }
 

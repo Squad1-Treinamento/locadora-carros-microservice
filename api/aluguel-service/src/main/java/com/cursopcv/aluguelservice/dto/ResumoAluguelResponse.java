@@ -27,7 +27,6 @@ public record ResumoAluguelResponse(
     BigDecimal subtotal,
 
     ApoliceSeguroResponse apolice,
-    BigDecimal custoApolice,
 
     BigDecimal valorTotal,
 

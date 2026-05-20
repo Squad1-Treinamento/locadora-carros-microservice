@@ -7,7 +7,6 @@ public record ApoliceSeguroResponse(
         Boolean protecaoTerceiro,
         Boolean protecaoCausasNaturais,
         Boolean protecaoRoubo,
-        BigDecimal valorFranquia,
-        BigDecimal custoApolice
+        BigDecimal valorFranquia
 ) {
 }

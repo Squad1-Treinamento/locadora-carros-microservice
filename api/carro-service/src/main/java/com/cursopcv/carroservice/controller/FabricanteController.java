@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/fabricantes")
+@RequestMapping("/fabricantes")
 @RequiredArgsConstructor
 public class FabricanteController {
 

@@ -18,10 +18,6 @@ public record ApoliceSeguroRequest(
 
         @NotNull(message = "Valor da franquia é obrigatório")
         @Positive(message = "Valor da franquia deve ser positivo")
-        BigDecimal valorFranquia,
-
-        @NotNull(message = "Custo da apólice é obrigatório")
-        @Positive(message = "Custo da apólice deve ser positivo")
-        BigDecimal custoApolice
+        BigDecimal valorFranquia
 ) {
 }

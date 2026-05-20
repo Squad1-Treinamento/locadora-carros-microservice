@@ -8,6 +8,7 @@ import com.cursopcv.aluguelservice.model.StatusAluguel;
 import com.cursopcv.aluguelservice.repository.AluguelRepository;
 import com.cursopcv.carroservice.dto.carro.CarroResponse;
 import com.cursopcv.notificationcontracts.dto.AluguelNotificationRequest;
+import com.cursopcv.notificationcontracts.dto.CustomNotificationRequest;
 import com.cursopcv.notificationcontracts.dto.ReservaNotificationRequest;
 import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class AluguelService {
         this.termosAluguel = termosAluguel;
         this.pessoaWebClient = webClientBuilder.baseUrl("http://localhost:8081").build();
         this.carroWebClient = webClientBuilder.baseUrl("http://localhost:8083").build();
-        this.notificationWebClient = webClientBuilder.baseUrl("http://localhost:8085").build();
+        this.notificationWebClient = webClientBuilder.baseUrl("http://localhost:8095").build();
     }
 
     public List<AluguelResponse> listarTodos() {
@@ -108,8 +109,7 @@ public class AluguelService {
         int quantidadeDias = (int) Math.max(1, TimeUnit.MILLISECONDS.toDays(diffMs));
 
         BigDecimal valorTotal = carro.valorDiaria()
-                .multiply(BigDecimal.valueOf(quantidadeDias))
-                .add(request.apoliceSeguro().custoApolice());
+                .multiply(BigDecimal.valueOf(quantidadeDias));
 
         Aluguel aluguel = aluguelMapper.toEntity(request, carro.valorDiaria(), quantidadeDias, valorTotal);
         AluguelResponse response = aluguelMapper.toResponse(aluguelRepository.save(aluguel));
@@ -137,10 +137,6 @@ public class AluguelService {
                 .bodyToMono(CarroResponse.class)
                 .block();
 
-        BigDecimal custoApolice = aluguel.getApoliceSeguro() != null
-                ? aluguel.getApoliceSeguro().getCustoApolice()
-                : BigDecimal.ZERO;
-
         return new ResumoAluguelResponse(
                 aluguel.getId(),
                 aluguel.getIdPessoa(),
@@ -156,7 +152,6 @@ public class AluguelService {
                 aluguel.getValorDiaria(),
                 aluguel.getValorDiaria().multiply(BigDecimal.valueOf(aluguel.getQuantidadeDias())),
                 aluguelMapper.toApoliceResponse(aluguel.getApoliceSeguro()),
-                custoApolice,
                 aluguel.getValorTotal(),
                 termosAluguel
         );
@@ -170,13 +165,13 @@ public class AluguelService {
             throw new PagamentoFalhouException("Apenas aluguéis com status PENDENTE podem ser confirmados.");
         }
 
-        if (pagamentoRequest.valor().compareTo(aluguel.getValorTotal()) != 0) {
-            throw new PagamentoFalhouException("Valor do pagamento não corresponde ao total do aluguel.");
-        }
-
         String numeroTransacao = "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        if (pagamentoRequest.numeroCartao().endsWith("0000")) {
-            throw new PagamentoFalhouException("Cartão recusado pela operadora.");
+
+        if (pagamentoRequest.tipoPagamento() == TipoPagamento.CARTAO_CREDITO) {
+            Integer parcelas = pagamentoRequest.parcelas();
+            if (parcelas == null || parcelas <= 0) {
+                throw new PagamentoFalhouException("Número de parcelas é obrigatório para cartão de crédito.");
+            }
         }
 
         aluguel.setStatus(StatusAluguel.CONFIRMADO);
@@ -205,6 +200,33 @@ public class AluguelService {
             notificarAluguel(motorista, carro);
         } catch (Exception e) {
             log.warn("Falha ao enviar notificação de aluguel: {}", e.getMessage());
+        }
+
+        try {
+            String subject = String.format("Pagamento processado - Aluguel #%s", aluguel.getId());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Olá ").append(motorista.nome()).append(",\n\n");
+            sb.append("Seu pagamento foi processado com sucesso.\n\n");
+            sb.append("Método de pagamento: ").append(pagamentoRequest.tipoPagamento()).append("\n");
+            if (pagamentoRequest.tipoPagamento() == TipoPagamento.CARTAO_CREDITO) {
+                sb.append("Parcelas: ").append(pagamentoRequest.parcelas()).append("\n");
+            }
+            sb.append("\nAtenciosamente,\nEquipe da Locadora");
+
+            CustomNotificationRequest custom = new CustomNotificationRequest(
+                    motorista.email(),
+                    subject,
+                    sb.toString()
+            );
+
+            notificationWebClient.post()
+                    .uri("/send")
+                    .bodyValue(custom)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();
+        } catch (Exception e) {
+            log.warn("Falha ao enviar notificação personalizada de pagamento: {}", e.getMessage());
         }
 
         return new CheckoutResponse(

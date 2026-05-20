@@ -21,5 +21,4 @@ public class ApoliceSeguro {
     private Boolean protecaoCausasNaturais;
     private Boolean protecaoRoubo;
     private BigDecimal valorFranquia;
-    private BigDecimal custoApolice;
 }
