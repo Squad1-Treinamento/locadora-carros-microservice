@@ -1,5 +1,6 @@
 package com.cursopcv.pessoaservice.mapper;
 
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import com.cursopcv.pessoaservice.dto.PessoaRequest;
 import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import com.cursopcv.pessoaservice.model.Funcionario;
@@ -10,6 +11,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PessoaMapper {
+    public static CadastroNotificationRequest toCadastroNotificationRequest(Motorista motoristaSalvo) {
+        if (motoristaSalvo == null) return null;
+
+        return new CadastroNotificationRequest(
+                motoristaSalvo.getNome(),
+                motoristaSalvo.getCpf(),
+                motoristaSalvo.getDataNascimento(),
+                null,
+                motoristaSalvo.getNumeroCNH(),
+                motoristaSalvo.getEmail()
+        );
+    }
+
     public Pessoa toEntity(PessoaRequest request) {
         if (request == null) return null;
 
@@ -81,3 +95,4 @@ public class PessoaMapper {
         );
     }
 }
+

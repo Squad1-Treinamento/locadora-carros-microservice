@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "modelos_carros")
 public class ModeloCarro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class ModeloCarro {
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
-    @OneToMany(mappedBy = "modelo", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "modelo", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Carro> carros;
 }

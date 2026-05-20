@@ -1,10 +1,10 @@
-server.port=8082
-spring.application.name=usuario-service
+server.port=8081
+spring.application.name=motorista-service
 
 # PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5433/locadora-db
-spring.datasource.username=SEU_USUARIO
-spring.datasource.password=SUA_SENHA
+spring.datasource.url=jdbc:postgresql://localhost:5433/${DB_NAME}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect

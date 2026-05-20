@@ -6,5 +6,7 @@ public record CarroRequestUpdate (
     String placa,
     String chassi,
     String cor,
-    BigDecimal valorDiaria
+    BigDecimal valorDiaria,
+    String imagemUrl,
+    Boolean disponivel
 ){}

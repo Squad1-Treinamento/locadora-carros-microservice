@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface FabricanteRepository extends JpaRepository<Fabricante,Integer> {
-    boolean existsByNome(String nome);
-
+    Optional<Fabricante> findById(Long id);
     Optional<Fabricante> findByNome(String nome);
+    Optional<Fabricante> findByNomeContainingIgnoreCase(String nome);
+    boolean existsByNomeIgnoreCase(String nome);
+    void deleteById(Long id);
 }

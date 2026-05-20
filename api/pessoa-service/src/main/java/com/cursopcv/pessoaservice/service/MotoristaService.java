@@ -1,5 +1,6 @@
 package com.cursopcv.pessoaservice.service;
 
+import com.cursopcv.notificationcontracts.dto.CadastroNotificationRequest;
 import com.cursopcv.pessoaservice.dto.PessoaRequest;
 import com.cursopcv.pessoaservice.dto.PessoaResponse;
 import com.cursopcv.pessoaservice.mapper.PessoaMapper;
@@ -41,7 +42,6 @@ public class MotoristaService {
         Pessoa pessoaNova = pessoaMapper.toEntity(motorista);
         Motorista motoristaSalvo = motoristaRepository.save((Motorista) pessoaNova);
 
-        // Send notification after successful save
         CadastroNotificationRequest cadastroRequest = PessoaMapper.toCadastroNotificationRequest(motoristaSalvo);
         notificationClient.notificarCadastro(cadastroRequest);
 
@@ -61,14 +61,14 @@ public class MotoristaService {
                 .orElseThrow(() -> new EntityNotFoundException("Motorista não existe!"));
 
         if (!motoristaExistente.getCpf().equals(request.cpf())) {
-            if (pessoaRepository.existsByCpf(request.cpf())) {
+            if (pessoaService.existePorCpf(request.cpf())) {
                 throw new IllegalArgumentException("O novo CPF informado já pertence a outro usuário.");
             }
             motoristaExistente.setCpf(request.cpf());
         }
 
         if(!motoristaExistente.getEmail().equals(request.email())){
-            if(pessoaRepository.existsByEmail(request.email())){
+            if(pessoaService.existePorEmail(request.email())){
                 throw new IllegalArgumentException("O novo email informado já pertence a outro usuário.");
             }
             motoristaExistente.setEmail(request.email());
@@ -83,3 +83,4 @@ public class MotoristaService {
         return pessoaMapper.toResponse(motoristaSalvo);
     }
 }
+

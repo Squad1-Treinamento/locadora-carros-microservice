@@ -13,15 +13,7 @@ import java.util.Set;
 
 public class CarroMapper {
 
-    public static Carro toEntity(CarroRequest carroRequest) {
-        Fabricante fabricante = new Fabricante();
-        fabricante.setNome(carroRequest.modelo().fabricante().nome());
-
-        ModeloCarro modelo = new ModeloCarro();
-        modelo.setFabricante(fabricante);
-        modelo.setCategoria(Categoria.toStringValue(carroRequest.modelo().categoria()));
-        modelo.setDescricao(carroRequest.modelo().descricao());
-
+    public static Carro toEntity(CarroRequest carroRequest, ModeloCarro modeloCarro) {
         Set<Acessorio> acessorioCarro = new HashSet<>();
         if (carroRequest.acessorios() != null) {
 
@@ -37,7 +29,9 @@ public class CarroMapper {
         carro.setChassi(carroRequest.chassi());
         carro.setCor(carroRequest.cor());
         carro.setValorDiaria(carroRequest.valorDiaria());
-        carro.setModelo(modelo);
+        carro.setImagemUrl(carroRequest.imagemUrl());
+        carro.setDisponivel(true);
+        carro.setModelo(modeloCarro);
         carro.setAcessorios(acessorioCarro);
 
         return carro;
@@ -65,6 +59,8 @@ public class CarroMapper {
                 carro.getChassi(),
                 carro.getCor(),
                 carro.getValorDiaria(),
+                carro.getImagemUrl(),
+                carro.isDisponivel(),
                 modeloCarroResponse,
                 acessoriosResponse
         );
