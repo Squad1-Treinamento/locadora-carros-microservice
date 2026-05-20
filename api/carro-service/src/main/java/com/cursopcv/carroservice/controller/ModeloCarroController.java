@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/modelos-carros")
+@RequestMapping("/modelos-carros")
 @RequiredArgsConstructor
 public class ModeloCarroController {
 
@@ -28,17 +28,13 @@ public class ModeloCarroController {
     }
 
     @PostMapping
-    public ResponseEntity<ModeloCarroResponse> cadastrar(@RequestBody @Valid ModeloCarroRequest modeloCarroRequest
-    ){
-        return ResponseEntity.created(null).body(service.cadastrar(modeloCarroRequest
-        ));
+    public ResponseEntity<ModeloCarroResponse> cadastrar(@RequestBody @Valid ModeloCarroRequest modeloCarroRequest){
+        return ResponseEntity.created(null).body(service.cadastrar(modeloCarroRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ModeloCarroResponse> atualizar(@RequestBody ModeloCarroRequest modeloCarroRequest
-            , @PathVariable Long id){
-        return ResponseEntity.ok(service.atualizar(id, modeloCarroRequest
-        ));
+    public ResponseEntity<ModeloCarroResponse> atualizar(@RequestBody ModeloCarroRequest modeloCarroRequest, @PathVariable Long id){
+        return ResponseEntity.ok(service.atualizar(id, modeloCarroRequest));
     }
 
     @DeleteMapping("/{id}")

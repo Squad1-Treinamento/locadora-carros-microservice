@@ -12,5 +12,5 @@ public record ModeloCarroRequest(
         String categoria,
 
         @NotNull(message = "Fabricante não pode estar vazio")
-        FabricanteRequest fabricante
+        Long fabricanteId
 ){}

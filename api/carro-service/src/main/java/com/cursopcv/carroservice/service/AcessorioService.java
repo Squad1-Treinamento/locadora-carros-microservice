@@ -44,7 +44,7 @@ public class AcessorioService {
             throw new EntityConflitExeption("Acessório já cadastrado.");
         }
 
-        acessorio.setDescricao(acessorio.getDescricao());
+        acessorio.setDescricao(request.descricao());
 
         return AcessorioMapper.toResponse(repository.save(acessorio));
     }

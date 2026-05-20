@@ -9,7 +9,7 @@ public class AcessorioMapper {
     public static Acessorio toEntity(AcessorioRequest acessorioRequest) {
         Acessorio acessorio = new Acessorio();
 
-        acessorio.setDescricao(acessorio.getDescricao());
+        acessorio.setDescricao(acessorioRequest.descricao());
 
         return acessorio;
     }

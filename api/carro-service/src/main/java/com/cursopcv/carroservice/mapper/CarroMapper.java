@@ -18,9 +18,11 @@ public class CarroMapper {
         if (carroRequest.acessorios() != null) {
 
             for (AcessorioRequestCarro request : carroRequest.acessorios()) {
-                Acessorio acessorio = new Acessorio();
-                acessorio.setDescricao(request.descricao());
-                acessorioCarro.add(acessorio);
+                if (request.descricao() != null) {
+                    Acessorio acessorio = new Acessorio();
+                    acessorio.setDescricao(request.descricao());
+                    acessorioCarro.add(acessorio);
+                }
             }
         }
 

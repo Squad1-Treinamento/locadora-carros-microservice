@@ -58,8 +58,8 @@ public class ModeloCarroService {
             modeloCarro.setCategoria(Categoria.toStringValue(modeloCarroRequest.categoria()));
         }
 
-        if (modeloCarroRequest.fabricante() != null && !modeloCarroRequest.fabricante().nome().isEmpty()) {
-            fabricanteRepository.findByNome(modeloCarroRequest.fabricante().nome())
+        if (modeloCarroRequest.fabricanteId() != null) {
+            fabricanteRepository.findById(modeloCarroRequest.fabricanteId())
                     .ifPresentOrElse(modeloCarro::setFabricante,
                             () -> { throw new EntityNotFoundExeption("Fabricante não encontrado"); });
         }
@@ -72,8 +72,8 @@ public class ModeloCarroService {
             throw new EntityConflitExeption("Modelo de Carro já cadastrado.");
         }
 
-        Fabricante fabricante = fabricanteRepository.findByNomeContainingIgnoreCase(modeloCarroRequest.fabricante().nome())
-                .orElseThrow(() -> new EntityNotFoundExeption("Fabricante com o nome " + modeloCarroRequest.fabricante().nome() + " não encontrado."));
+        Fabricante fabricante = fabricanteRepository.findById(modeloCarroRequest.fabricanteId())
+                .orElseThrow(() -> new EntityNotFoundExeption("Fabricante com o ID " + modeloCarroRequest.fabricanteId() + " não encontrado."));
 
         ModeloCarro modeloCarro = ModeloCarroMapper.toEntity(modeloCarroRequest, fabricante);
 
